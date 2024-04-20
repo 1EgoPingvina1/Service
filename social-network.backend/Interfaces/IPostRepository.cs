@@ -1,25 +1,27 @@
-﻿using social_network.backend.Entities;
+﻿using social_network.backend.DTOs;
+using social_network.backend.Entities;
 
 namespace social_network.backend.Interfaces
 {
     public interface IPostRepository
     {
         //Для поста
+        Task<List<Post>> GetAllPosts();
         Task<Post> GetPostByIdAsync(int postId);
         Task<IEnumerable<Post>> GetPostsByUserIdAsync(int userId);
         //Task<IEnumerable<Post>> GetPostsFeedAsync(int userId);
         //Task<IEnumerable<Post>> SearchPostsAsync(string searchTerm);
-        Task<Post> CreatePostAsync(Post post);
-        Task<Post> UpdatePostAsync(int postId, Post updatedPost);
-        Task<bool> DeletePostAsync(int postId);
+        Task<Post> CreatePost(Post post);
+        Task<bool> DeletePost(int postId);
+        Task<Post> UpdatePost(int id, PostForUpdateDTO postUpdateDTO);
 
         //Для Комментов
-        Task<Comment> GetCommentByIdAsync(int commentId);
-        Task<IEnumerable<Post>> GetCommentsByUserIdAsync(int userId);
-        //Task<IEnumerable<Post>> GetCommentsFeedAsync(int userId);
-        //Task<IEnumerable<Post>> SearchCommentAsync(string searchTerm);
-        Task<Comment> CreateCommentAsync(Comment comment);
-        Task<Comment> UpdatePostAsync(int commentId, Comment updateComment);
-        Task<bool> DeleteCommentAsync(int commentId);
+        //Task<Comment> GetCommentById(int commentId);
+        //Task<IEnumerable<Comment>> GetCommentsByUserId(int userId);
+        ////Task<IEnumerable<Post>> GetCommentsFeedAsync(int userId);
+        ////Task<IEnumerable<Post>> SearchCommentAsync(string searchTerm);
+        //Task<Comment> CreateComment(Comment comment);
+        //Task<Comment> UpdatePost(int commentId, Comment updateComment);
+        //Task<bool> DeleteComment(int commentId);
     }
 }

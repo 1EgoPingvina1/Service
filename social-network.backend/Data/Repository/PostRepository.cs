@@ -1,46 +1,27 @@
-﻿using social_network.backend.Entities;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using social_network.backend.DTOs;
+using social_network.backend.Entities;
 using social_network.backend.Interfaces;
 
 namespace social_network.backend.Data.Repository
 {
     public class PostRepository : IPostRepository
     {
-        public readonly DataContext _context;
+        private readonly DataContext _context;
 
         public PostRepository(DataContext context)
         {
             _context = context;
-        }   
+        }
 
-        public Task<Post> CreatePostAsync(Post post)
+        //Post
+        public Task<Post> CreatePost(Post post)
         {
             throw new NotImplementedException();
         }
-
-        public Task<Comment> CreateCommentAsync(Comment comment)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeleteCommentAsync(int commentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<bool> DeletePostAsync(int postId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Comment> GetCommentByIdAsync(int commentId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IEnumerable<Post>> GetCommentsByUserIdAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
+        //Get
+        public async Task<List<Post>> GetAllPosts() => await _context.Posts.ToListAsync();
 
         public Task<Post> GetPostByIdAsync(int postId)
         {
@@ -52,12 +33,19 @@ namespace social_network.backend.Data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<Post> UpdatePostAsync(int postId, Post updatedPost)
+        //Delete
+        public async Task<bool> DeletePost(int postId)
         {
-            throw new NotImplementedException();
+            var post = _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
+            if (post == null)
+                return false;
+
+            _context.Remove(post);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<Comment> UpdatePostAsync(int commentId, Comment updateComment)
+        public Task<Post> UpdatePost(int id, PostForUpdateDTO postUpdateDTO)
         {
             throw new NotImplementedException();
         }

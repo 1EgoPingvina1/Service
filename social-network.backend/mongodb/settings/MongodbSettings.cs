@@ -1,9 +1,9 @@
 ﻿namespace social_network.backend.mongodb.settings
 {
-    public class MongodbSettings : IMongodbSettings
+    public class MongodbSettings
     {
-        public string UserTokenCollectionName { get; set; }
-        public string ConnectioonString { get; set; }
+        public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
+        public string CollectionName { get; set; }
     }
 }
