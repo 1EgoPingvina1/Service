@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using social_network.backend.DTOs;
 using social_network.backend.Entities;
 using social_network.backend.Interfaces;
@@ -15,39 +14,43 @@ namespace social_network.backend.Data.Repository
             _context = context;
         }
 
-        //Post
-        public Task<Post> CreatePost(Post post)
-        {
-            throw new NotImplementedException();
-        }
-        //Get
         public async Task<List<Post>> GetAllPosts() => await _context.Posts.ToListAsync();
 
-        public Task<Post> GetPostByIdAsync(int postId)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Post> GetPostByIdAsync(int postId) => await _context.Posts.SingleOrDefaultAsync(i => i.Id == postId);
+        
 
-        public Task<IEnumerable<Post>> GetPostsByUserIdAsync(int userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        //Delete
+        public async Task <Post> GetPostsByUserIdAsync(int userId)
+        => await _context.Posts.FirstOrDefaultAsync(i => i.UserId == userId);
+       
         public async Task<bool> DeletePost(int postId)
         {
-            var post = _context.Posts.FirstOrDefaultAsync(p => p.Id == postId);
-            if (post == null)
-                return false;
-
-            _context.Remove(post);
-            await _context.SaveChangesAsync();
-            return true;
+            var post = await _context.Posts.FindAsync(postId);
+            if (post != null)
+            {
+                _context.Posts.Remove(post);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public Task<Post> UpdatePost(int id, PostForUpdateDTO postUpdateDTO)
+        public async Task<Post> UpdatePost(int id, Post updatePost)
         {
-            throw new NotImplementedException();
+            var post = await _context.Posts.SingleOrDefaultAsync(p => p.Id == id);
+            if (post != null)
+            {
+                post.Title = updatePost.Title;
+                post.Description = updatePost.Description;
+                await _context.SaveChangesAsync();
+                return post;
+            }
+            throw new ArgumentNullException();
+        }
+
+        public void CreatePost(Post post)
+        {
+            _context.Posts.Add(post);
+            _context.SaveChanges();
         }
     }
 }

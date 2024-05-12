@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using social_network.backend.Data;
 using social_network.backend.Data.Repository;

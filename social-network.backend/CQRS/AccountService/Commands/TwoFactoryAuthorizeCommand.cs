@@ -7,7 +7,7 @@ namespace social_network.backend.CQRS.AccountService.Commands
 {
     public class TwoFactoryAuthorizeCommand : IRequest<UserDTO>
     {
-        public string Code { get; set; }
         public string Username { get; set; }
+        public string Code { get; set; }
     }
 }

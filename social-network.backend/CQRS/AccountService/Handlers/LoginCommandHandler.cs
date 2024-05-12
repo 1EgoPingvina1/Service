@@ -41,7 +41,9 @@ namespace social_network.backend.CQRS.AccountService.Handlers
         }
         public async Task<ActionResult<UserDTO>> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == request.LoginDTO.Username);
+            var user = await _userManager.Users
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(x => x.UserName == request.LoginDTO.Username);
             if (user == null)
                 throw new HttpException(401,"Invalid login/password");
 
@@ -60,22 +62,19 @@ namespace social_network.backend.CQRS.AccountService.Handlers
             var code = await _userManager.GenerateTwoFactorTokenAsync(user, "Email");
             await _emailService.SendTwoFactorCodeAsync(user.Email, code);
             await SaveUserTokenToMongoDB(user.UserName, code);
-            throw new HttpException(200,$"Your account verification code has been sent to your email: {user.Email}");
+            throw new Exception(StatusCodes.Status200OK.ToString());
         }
 
-        private async Task<ActionResult<UserDTO>> GenerateTokenAndReturnUserDTO(User user)
-        {
-            var token = await _tokenService.CreateToken(user);
-            return new UserDTO{
+        private async Task<ActionResult<UserDTO>> GenerateTokenAndReturnUserDTO(User user)  
+            => new UserDTO{
                 Username = user.UserName,
-                Token = token
+                PhotoUrl = user.Photos.FirstOrDefault(u => u.IsMain).Url,
+                Token = await _tokenService.CreateToken(user)
             };
-        }
-
+        
         private async Task SaveUserTokenToMongoDB(string userName, string code)
         {
-            var token = new UserToken
-            {
+            var token = new UserToken{
                 UserName = userName,
                 Token = code,
                 WasDeleted = DateTime.Now
@@ -84,7 +83,7 @@ namespace social_network.backend.CQRS.AccountService.Handlers
                 Builders<UserToken>.IndexKeys.Ascending(k => k.WasDeleted),
                 new CreateIndexOptions
                 {
-                    ExpireAfter = TimeSpan.FromSeconds(30)
+                    ExpireAfter = TimeSpan.FromSeconds(300)
                 });
             await _collection.Indexes.CreateOneAsync(indexModel);
             await _collection.InsertOneAsync(token);

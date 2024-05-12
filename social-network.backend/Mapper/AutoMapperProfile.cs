@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using social_network.backend.DTOs;
+using social_network.backend.Entities;
 using social_network.backend.Entities.Identity;
 
 namespace social_network.backend.Mapper
@@ -14,6 +15,7 @@ namespace social_network.backend.Mapper
             //CreateMap<Photo, PhotoDTO>();
             //CreateMap<MemberUpdateDTO, AppUser>();
             CreateMap<RegisterDTO, User>();
+            CreateMap<PostForCreateDTO, Post>();
             //CreateMap<Message, MessageDTO>()
             //    .ForMember(d => d.SenderPhotoUrl, o => o.MapFrom(s => s.Sender.Photos.FirstOrDefault(x => x.IsMain).Url))
             //    .ForMember(d => d.RecipientPhotoUrl, o => o.MapFrom(s => s.Recipient.Photos.FirstOrDefault(x => x.IsMain).Url));

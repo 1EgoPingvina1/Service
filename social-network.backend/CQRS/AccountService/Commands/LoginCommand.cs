@@ -1,5 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using social_network.backend.DTOs;
 

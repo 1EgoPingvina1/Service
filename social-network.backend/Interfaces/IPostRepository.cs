@@ -1,4 +1,5 @@
-﻿using social_network.backend.DTOs;
+﻿using Microsoft.AspNetCore.Mvc;
+using social_network.backend.DTOs;
 using social_network.backend.Entities;
 
 namespace social_network.backend.Interfaces
@@ -8,12 +9,12 @@ namespace social_network.backend.Interfaces
         //Для поста
         Task<List<Post>> GetAllPosts();
         Task<Post> GetPostByIdAsync(int postId);
-        Task<IEnumerable<Post>> GetPostsByUserIdAsync(int userId);
+        Task<Post> GetPostsByUserIdAsync(int userId);
         //Task<IEnumerable<Post>> GetPostsFeedAsync(int userId);
         //Task<IEnumerable<Post>> SearchPostsAsync(string searchTerm);
-        Task<Post> CreatePost(Post post);
+        void CreatePost(Post post);
         Task<bool> DeletePost(int postId);
-        Task<Post> UpdatePost(int id, PostForUpdateDTO postUpdateDTO);
+        Task<Post> UpdatePost(int id, Post postUpdateDTO);
 
         //Для Комментов
         //Task<Comment> GetCommentById(int commentId);

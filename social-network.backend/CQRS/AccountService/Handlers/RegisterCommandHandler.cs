@@ -3,12 +3,10 @@ using MediatR;
 using MongoDB.Driver;
 using Microsoft.AspNetCore.Mvc;
 using social_network.backend.DTOs;
-using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using social_network.backend.Errors;
 using social_network.backend.Interfaces;
-using social_network.backend.mongodb.settings;
 using social_network.backend.Entities.Identity;
 using social_network.backend.CQRS.AccountService.Commands;
 

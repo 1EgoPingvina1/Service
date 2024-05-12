@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using social_network.backend.DTOs;
 using social_network.backend.Entities;
 using social_network.backend.Interfaces;
@@ -9,10 +10,26 @@ namespace social_network.backend.Controllers
     public class PostController : BaseController
     {
         private readonly IPostRepository _postRepository;
+        private readonly IMapper _mapper;
 
-        public PostController(IPostRepository postRepository)
+        public PostController(IPostRepository postRepository,IMapper mapper)
         {
             _postRepository = postRepository;
+            _mapper = mapper;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PostForCreateDTO>> CreatePostAsync(PostForCreateDTO post)
+        {
+            var newpost = _mapper.Map<Post>(post);
+            if(newpost != null)
+            {
+                _postRepository.CreatePost(newpost);
+                return Ok(newpost);
+            }
+
+            return BadRequest("Post was not created");
+
         }
 
         [HttpGet]
@@ -46,44 +63,13 @@ namespace social_network.backend.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create([FromBody] Post yourDTO)
-        {
-            try
-            {
-                var createdPost = await _postRepository.CreatePost(yourDTO);
-                return CreatedAtAction(nameof(GetById), new { id = createdPost.Id }, createdPost);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Произошла ошибка: {ex.Message}");
-            }
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] PostForUpdateDTO PostUpdateDTO)
-        {
-            try
-            {
-                var updatedPost = await _postRepository.UpdatePost(id, PostUpdateDTO);
-                if (updatedPost == null)
-                    return NotFound("Пост не найден");
-
-                return Ok(updatedPost);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Произошла ошибка: {ex.Message}");
-            }
-        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-
             var deletedPost = await _postRepository.DeletePost(id);
             if (!deletedPost)
-                return BadRequest("Ошибка удаления...");
+                return BadRequest("");
 
             return Ok(deletedPost);
 

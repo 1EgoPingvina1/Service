@@ -7,16 +7,16 @@ namespace social_network.backend.mongodb.model
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = String.Empty;
+        public string Id { get; set; }
 
         [BsonElement("username")]
-        public string UserName { get; set; } = String.Empty;
+        public string UserName { get; set; }
 
         [BsonElement("token")]
-        public string Token { get; set; } = String.Empty;
+        public string Token { get; set; }
 
         [BsonElement("wasdeleted")]
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime WasDeleted { get; set; } = DateTime.UtcNow;
+        [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
+        public DateTime WasDeleted { get; set; } = DateTime.Now;
     }
 }

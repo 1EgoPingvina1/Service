@@ -8,6 +8,8 @@ namespace social_network.backend.Entities.Identity
         public string Status { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime LastActive { get; set; } = DateTime.UtcNow;
+        public ICollection<PostLike> Likes { get; set; }
+        public ICollection<Post> Posts { get; set; } 
         public ICollection<UserRole> UserRoles { get; set; }
         public List<Photo> Photos { get; set; } = new();
 

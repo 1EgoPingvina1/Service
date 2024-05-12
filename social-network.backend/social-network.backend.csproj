@@ -28,4 +28,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="CQRS\PostSerivce\Command\" />
+    <Folder Include="CQRS\PostSerivce\Handler\" />
+    <Folder Include="CQRS\PostSerivce\Querys\" />
+  </ItemGroup>
+
 </Project>
